@@ -1,0 +1,25 @@
+name: test
+on:
+- pull_request
+jobs:
+  focal:
+    container:
+      image: swift:5.7-focal
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: swift test --enable-test-discovery
+  thread:
+    container:
+      image: swift:5.7-focal
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: swift test --enable-test-discovery  --sanitize=thread
+  address:
+    container:
+      image: swift:5.7-focal
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: ASAN_OPTIONS=detect_leaks=0 swift test --enable-test-discovery --sanitize=address
